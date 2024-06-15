@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block body %}
+  <div class="container mt-5">
+    <center>
+      {% comment %}FORM TO ADD TEACHER{% endcomment %}
+      <form class="col-6 card p-3 shadow-lg" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2>Add Teacher</h2>
+        <hr />
+
+        {% comment %}TEACHER NAME{% endcomment %}
+        <div class="mb-3">
+          <div class="d-flex justify-content-start p-1">
+            <label for="inputTeacherName" class="form-label"><b>Teacher Name</b></label>
+          </div>
+          <input type="text" class="form-control" placeholder="Teacher Name" name="teacher_name" />
+        </div>
+
+        {% comment %}TEACHER AGE{% endcomment %}
+        <div class="mb-3">
+          <div class="d-flex justify-content-start p-1">
+            <label for="inputTeacherAge" class="form-label"><b>Age</b></label>
+          </div>
+          <input type="number" class="form-control" placeholder="Age" name="teacher_age" />
+        </div>
+
+        {% comment %}TEACHER DOB{% endcomment %}
+        <div class="mb-3">
+          <div class="d-flex justify-content-start p-1">
+            <label for="inputTeacherDob" class="form-label"><b>Date of Birth</b></label>
+          </div>
+          <input type="date" class="form-control" name="teacher_dob" />
+        </div>
+
+        {% comment %}NUMBER OF CLASSES TEACHER TEACH{% endcomment %}
+        <div class="mb-3">
+          <div class="d-flex justify-content-start p-1">
+            <label for="inputNumberOfClasses" class="form-label"><b>Number of classes</b></label>
+          </div>
+          <input type="number" class="form-control" placeholder="Number of Classes" name="teacher_number_of_classes" />
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+    </center>
+    <hr />
+
+    {% comment %}TEACHERS LIST{% endcomment %}
+    <div class="container mt-5 mb-5">
+      <h2>Teachers list</h2>
+      <table class="container">
+        <tr>
+          <th>Sr. no</th>
+          <th>Teacher Name</th>
+          <th>Age</th>
+          <th>DOB</th>
+          <th>Num of Classes</th>
+          <th>Actions</th>
+        </tr>
+        {% for item in teachers %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ item.full_name }}</td>
+            <td>{{ item.age }}</td>
+            <td>{{ item.date_of_birth }}</td>
+            <td>{{ item.number_of_classes }}</td>
+            <td>
+              <a href="/delete-teacher/{{ item.id }}" class="btn" style="background-color: red; color: #fff; margin: 10px;">Delete</a>
+              <a href="/update-teacher/{{ item.id }}" class="btn btn-success" style=" color: #fff; margin: 10px;">Update</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endblock %}
