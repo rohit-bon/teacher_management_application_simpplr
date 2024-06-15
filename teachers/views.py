@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse, HttpResponse
+from django.db.models import Avg
 from .models import *
 
 
@@ -46,8 +46,13 @@ def home(request):
             class_queryset = queryset
             
         queryset = age_queryset & class_queryset
+    
+    # AVERAGE NUMBER OF CLASS, OPTIONAL TASK 
+    avg_classes = queryset.aggregate(Avg('number_of_classes'))['number_of_classes__avg']
+    if avg_classes is not None:
+        avg_classes = round(avg_classes)
         
-    context = {'teachers' : queryset}
+    context = {'teachers': queryset, 'avg_classes': avg_classes}
     
     return render(request, "home/index.html", context)
 
