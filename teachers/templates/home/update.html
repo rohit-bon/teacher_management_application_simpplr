@@ -39,6 +39,9 @@
         <input type="number" value="{{ teacher.number_of_classes }}" class="form-control" placeholder="Number of Classes" name="teacher_number_of_classes" />
       </div>
       <button type="submit" class="btn btn-success">Update</button>
+      {% if error_message %}
+          <p style="color:red;">{{ error_message }}</p>
+      {% endif %}
     </form>
   </div>
 {% endblock %}
