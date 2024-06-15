@@ -25,6 +25,28 @@ def home(request):
     
     # Teachers Data, READ OPERATION
     queryset = Teacher.objects.all()
+    
+    # SEARCH TEACHER 
+    if request.GET.get('search'):
+        queryset = queryset.filter(full_name__icontains = request.GET.get('search'))
+        
+    # FILTER TEACHER BASED ON AGE AND NUMBER OF CLASSES
+    elif request.GET.get('filter_age') or request.GET.get('filter_class'):
+        filter_age = request.GET.get('filter_age', '').strip()
+        filter_class = request.GET.get('filter_class', '').strip()
+        
+        if filter_age:
+            age_queryset = queryset.filter(age__icontains=filter_age)
+        else:
+            age_queryset = queryset
+        
+        if filter_class:
+            class_queryset = queryset.filter(number_of_classes__icontains=filter_class)
+        else:
+            class_queryset = queryset
+            
+        queryset = age_queryset & class_queryset
+        
     context = {'teachers' : queryset}
     
     return render(request, "home/index.html", context)

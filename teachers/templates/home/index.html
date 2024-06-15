@@ -44,6 +44,38 @@
     </center>
     <hr />
 
+    <div class="container mt-5 row m-1 d-flex justify-content-evenly">
+      {% comment %}SEARCH TEACHER{% endcomment %}
+      <div class="col-md-6">
+        <form class="card p-3 shadow-lg">
+          <h3>Search</h3>
+          <hr />
+          <div class="mb-3">
+            <label for="inputTeacherName" class="form-label">Search Teacher</label>
+            <input type="text" class="form-control" placeholder="Teacher Name" name="search" />
+          </div>
+          <button type="submit" class="btn btn-success">Search</button>
+        </form>
+      </div>
+
+      {% comment %}FILTER TEACHER BASED ON AGE AND NUMBER OF CLASSES{% endcomment %}
+      <div class="col-md-4">
+        <form class="card p-3 shadow-lg">
+          <h3>Filter</h3>
+          <hr />
+          <div class="mb-3">
+            <label for="inputTeacherAge" class="form-label">Teacher Age</label>
+            <input type="number" class="form-control" placeholder="Teacher Age" name="filter_age" />
+          </div>
+          <div class="mb-3">
+            <label for="inputNumberOfClasses" class="form-label">Number of Classes</label>
+            <input type="number" class="form-control" placeholder="number of classes" name="filter_class" />
+          </div>
+          <button type="submit" class="btn btn-success">Filter</button>
+        </form>
+      </div>
+    </div>
+
     {% comment %}TEACHERS LIST{% endcomment %}
     <div class="container mt-5 mb-5">
       <h2>Teachers list</h2>
