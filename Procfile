@@ -1,1 +1,0 @@
-web: gunicorn teacher_management_application.wsgi
