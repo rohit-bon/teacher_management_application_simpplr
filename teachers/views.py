@@ -17,34 +17,30 @@ def calculate_age(date_of_birth):
     age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
     return age
 
-def home(request):  # sourcery skip: extract-method
+def home(request):
     error_message = None
+    
     # Add Teacher, CREATE OPERATION
     if request.method == "POST":
         data = request.POST
         
         full_name = data.get("teacher_name")
-        age = data.get("teacher_age")
         date_of_birth = data.get("teacher_dob")
         number_of_classes = data.get("teacher_number_of_classes")
 
         try:
             dob_age = calculate_age(date_of_birth)
-            print(dob_age)
-            if int(age) < 18:
+            if dob_age < 18:
                 raise AgeValidationError("Age must be at least 18.")
-            elif dob_age != int(age):
-                raise AgeValidationError("Age is not same as per DOB.")
             Teacher.objects.create(
                 full_name = full_name,
-                age = age,
+                age = int(dob_age),
                 date_of_birth = date_of_birth,
                 number_of_classes = number_of_classes
             )
         except IntegrityError:
             error_message = "A teacher with this name and date of birth already exists."
         except ValueError:
-            print('error occur')
             error_message = "Empty Fields are not allowed."
         except AgeValidationError as e:
             error_message = e
@@ -101,40 +97,38 @@ def delete_teacher(request, id):
 
 
 # Update Teacher, UPDATE OPERATION
-def update_teacher(request, id):  # sourcery skip: extract-method
+def update_teacher(request, id):
     error_message = None
     queryset = Teacher.objects.get(id = id)
 
     if request.method == "POST":
-        data = request.POST
+        if request.POST.get('_method') == 'PUT':
+            data = request.POST
 
-        full_name = data.get("teacher_name")
-        age = data.get("teacher_age")
-        date_of_birth = data.get("teacher_dob")
-        number_of_classes = data.get("teacher_number_of_classes")
+            full_name = data.get("teacher_name")
+            date_of_birth = data.get("teacher_dob")
+            number_of_classes = data.get("teacher_number_of_classes")
 
-        try:
-            dob_age = calculate_age(date_of_birth)
-            if int(age) < 18:
-                raise AgeValidationError("Age must be at least 18.")
-            elif dob_age != int(age):
-                raise AgeValidationError("Age is not same as per DOB.")
-            queryset.full_name = full_name
-            queryset.age = age
-            queryset.date_of_birth = date_of_birth
-            queryset.number_of_classes = number_of_classes
-            queryset.save()
-        except IntegrityError:
-            error_message = "A teacher with this name and date of birth already exists."
-        except ValueError:
-            error_message = "Empty Fields are not allowed."
-        except AgeValidationError as e:
-            error_message = e
-        except ValidationError:
-            error_message = "Empty Fields or wrong input are not allowed."
-        
-        if not error_message:
-            return redirect('/')
+            try:
+                dob_age = calculate_age(date_of_birth)
+                if int(dob_age) < 18:
+                    raise AgeValidationError("Age must be at least 18.")
+                queryset.full_name = full_name
+                queryset.age = int(dob_age)
+                queryset.date_of_birth = date_of_birth
+                queryset.number_of_classes = number_of_classes
+                queryset.save()
+            except IntegrityError:
+                error_message = "A teacher with this name and date of birth already exists."
+            except ValueError:
+                error_message = "Empty Fields are not allowed."
+            except AgeValidationError as e:
+                error_message = e
+            except ValidationError:
+                error_message = "Empty Fields or wrong input are not allowed."
+            
+            if not error_message:
+                return redirect('/')
         
     context = {'teacher': queryset, 'error_message': error_message}
 

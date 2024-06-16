@@ -3,24 +3,17 @@
   <div class="container mt-5">
     {% comment %}UPDATE TEACHER FORM{% endcomment %}
     <form class="col-6 max-auto card p-3 shadow-lg container" method="post" enctype="multipart/form-data">
+      {% comment %} Apply usin put {% endcomment %}
       {% csrf_token %}
       <h2>Update Teacher</h2>
       <hr />
-
+      <input type="hidden" name="_method" value="PUT">
       {% comment %}UPDATE TEACHER NAME{% endcomment %}
       <div class="mb-3">
         <div class="d-flex justify-content-start p-1">
           <label for="inputTeacherName" class="form-label"><b>Teacher Name</b></label>
         </div>
         <input type="text" value="{{ teacher.full_name }}" class="form-control" placeholder="Teacher Name" name="teacher_name" />
-      </div>
-
-      {% comment %}UPDATE TEACHER AGE{% endcomment %}
-      <div class="mb-3">
-        <div class="d-flex justify-content-start p-1">
-          <label for="inputTeacherAge" class="form-label"><b>Age</b></label>
-        </div>
-        <input type="number" value="{{ teacher.age }}" class="form-control" placeholder="Age" name="teacher_age" />
       </div>
 
       {% comment %}UPDATE TEACHER DOB{% endcomment %}
